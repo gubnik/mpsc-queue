@@ -14,12 +14,13 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 file(GLOB_RECURSE PROJECT_HEADERS "${CMAKE_CURRENT_SOURCE_DIR}/include/*.hpp")
 file(GLOB_RECURSE PROJECT_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
+file(GLOB_RECURSE PROJECT_EXAMPLES "${CMAKE_CURRENT_SOURCE_DIR}/example/*.cpp")
 
-# nikgub: this does nothing because everything is a header
-add_library(${PROJECT_NAME} SHARED ${PROJECT_HEADERS} ${PROJECT_SOURCES})
-add_executable(timer ${CMAKE_CURRENT_SOURCE_DIR}/example/timer.cpp ${PROJECT_HEADERS})
-target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
-target_include_directories(timer PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
-set_target_properties(${PROJECT_NAME} PROPERTIES LINKER_LANGUAGE CXX)
+foreach(EXAMPLE ${PROJECT_EXAMPLES})
+    get_filename_component(EXAMPLE_NAME ${EXAMPLE} NAME_WE)  # Get the filename without extension
+    message(${EXAMPLE_NAME})
+    add_executable(${EXAMPLE_NAME} ${EXAMPLE})
+    target_include_directories(${EXAMPLE_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+endforeach()
 
 install(FILES ${PROJECT_HEADERS} DESTINATION include/ngg/mpscqueue)
