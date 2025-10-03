@@ -1,0 +1,10 @@
+CompileFlags:
+  Add:
+    - -std=c++26
+    - -Iinclude
+
+CompileCommands: .
+
+ProjectRoot: .
+
+CompilationDatabase: build/compile_commands.json
